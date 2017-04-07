@@ -45,15 +45,16 @@ public class MenuPersonnel extends AppCompatActivity
 
         username = previousIntent.getStringExtra("username");
         users= previousIntent.getStringArrayExtra("users");
-        x=previousIntent.getIntArrayExtra("x");
-        y=previousIntent.getIntArrayExtra("y");
+        //x=previousIntent.getIntArrayExtra("x");
+        //y=previousIntent.getIntArrayExtra("y");
+
 
         nbPatient=previousIntent.getIntExtra("number",0);
 
         int i;
 
         idPatient= new int[nbPatient];
-
+        Patient [] p =new Patient[nbPatient];
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -63,8 +64,6 @@ public class MenuPersonnel extends AppCompatActivity
                         .setAction("Action", null).show();
             }
         });
-
-
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -82,14 +81,32 @@ public class MenuPersonnel extends AppCompatActivity
         Menu menu=navigationView.getMenu();
         SubMenu subMenu_patient = menu.addSubMenu("Patients");
         for(i=0;i<nbPatient;i++) {
+
             idPatient[i]=Menu.FIRST + i;
             subMenu_patient.add(Menu.NONE, idPatient[i], Menu.NONE, users[i]).setIcon(R.drawable.user);
+            p[i].setUsername(users[i]);
+            try
+            {
+                boolean finished = false;
+                while (! finished)
+                {
+                    // Exécution de la tâche
+                    //p[i].update(users[i]);
+                    onDraw(canvas ,p);
+                    Thread.sleep (5000); // En pause pour deux secondes
+                }
+            }
+            catch (InterruptedException exception){}
 
         }
-        onDraw(canvas ,x, y);
+
+        // update
+
         navigationView.setNavigationItemSelectedListener(this);
+
+
     }
-    public void onDraw(Canvas canvas , int [] x, int [] y){
+    public void onDraw(Canvas canvas , Patient[] p){
         Bitmap bitmap;
         Paint paint;
         ImageView imageView = (ImageView) findViewById(R.id.imageView5);
@@ -98,9 +115,10 @@ public class MenuPersonnel extends AppCompatActivity
         paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         paint.setColor(Color.GREEN);
         for (int i=0 ; i<nbPatient; i++) {
-            canvas.drawCircle(x[i] / 100000, y[i] / 100000, 20, paint);
+            canvas.drawCircle(p[i].getX() / 100000, p[i].getY() / 100000, 20, paint);
             imageView.setImageBitmap(bitmap);
         }
+
     }
 
     @Override

@@ -42,6 +42,7 @@ public class MenuPatient extends AppCompatActivity {
         setTitle(username);
         onDraw(canvas ,x, y);
 
+
     }
 
     public void onDraw(Canvas canvas , int x, int y){
