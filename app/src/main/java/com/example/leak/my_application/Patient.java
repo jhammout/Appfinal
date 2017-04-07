@@ -1,8 +1,7 @@
 package com.example.leak.my_application;
 
-import android.content.Intent;
 import android.util.Log;
-import android.widget.Toast;
+import android.widget.ProgressBar;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -10,14 +9,11 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import static com.example.leak.my_application.R.id.username;
 
 /**
  * Created by jihane on 07/04/17.
@@ -25,25 +21,34 @@ import static com.example.leak.my_application.R.id.username;
 
 public class Patient {
 
-    private String patientName="Hello";
-    private int x =0,y=0;
+    private String patientName;
+    private int x,y;
     private static final String URL = "https://geodoc.000webhostapp.com/BackEnd/getCoordinate.php";
     private StringRequest request;
+    ProgressBar bar;
 
+
+    public Patient(){
+        patientName="Hello";
+        x=0;
+        y=5;
+
+    }
     public void setPatientName(String patientName) {
         this.patientName = patientName;
     }
 
-    public void update(final String patientName) {
-        this.patientName = patientName ;
-        final int [] pos =new int[2];
+    public void update() {
+
         request = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 try {
                     JSONObject jsonObject = new JSONObject(response);
+                    Log.d("ResponseVolley",response);
                     setX(jsonObject.getInt("x"));
                     setY(jsonObject.getInt("y"));
+
                 } catch (JSONException e) {
                     e.printStackTrace();
 
@@ -88,7 +93,5 @@ public class Patient {
     public void setY(int y) {
         this.y = y;
     }
-
-
 
 }

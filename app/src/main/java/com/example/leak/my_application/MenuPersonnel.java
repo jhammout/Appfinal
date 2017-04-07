@@ -5,14 +5,11 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.util.Log;
-import android.view.SubMenu;
-import android.view.View;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -20,6 +17,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.SubMenu;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,9 +29,10 @@ public class MenuPersonnel extends AppCompatActivity
     private static int [] idPatient;
     private String username;
     private String [] users;
-    private int [] x,y;
+    private Patient [] p;
     private int  nbPatient=0;
     private Canvas canvas;
+    private UserLoginTask mAuthTask = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,9 +52,11 @@ public class MenuPersonnel extends AppCompatActivity
         nbPatient=previousIntent.getIntExtra("number",0);
 
         int i;
+        int[] pos= new int[2];
 
         idPatient= new int[nbPatient];
-        Patient[] p =new Patient[nbPatient];
+
+        p = new Patient[nbPatient];
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -81,33 +83,22 @@ public class MenuPersonnel extends AppCompatActivity
         Menu menu=navigationView.getMenu();
         SubMenu subMenu_patient = menu.addSubMenu("Patients");
         for(i=0;i<nbPatient;i++) {
-
+            p[i]=new Patient();
             idPatient[i]=Menu.FIRST + i;
             subMenu_patient.add(Menu.NONE, idPatient[i], Menu.NONE, users[i]).setIcon(R.drawable.user);
-            //p[i].setPatientName(users[i]);
-
-            try
-            {
-                boolean finished = false;
-                while (! finished)
-                {
-                    // Exécution de la tâche
-                    p[i].update(users[i]);
-                    onDraw(canvas ,p);
-                    Thread.sleep (5000); // En pause pour deux secondes
-                }
-            }
-            catch (InterruptedException exception){}
+            p[i].setPatientName(users[i]);
+            p[i].update();
 
         }
-
+        mAuthTask = new UserLoginTask(users);
+        mAuthTask.execute((Void) null);
         // update
 
         navigationView.setNavigationItemSelectedListener(this);
 
 
     }
-    public void onDraw(Canvas canvas , Patient[] p){
+    public void onDraw(Canvas canvas , Patient [] p){
         Bitmap bitmap;
         Paint paint;
         ImageView imageView = (ImageView) findViewById(R.id.imageView5);
@@ -115,10 +106,9 @@ public class MenuPersonnel extends AppCompatActivity
         canvas = new Canvas(bitmap);
         paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         paint.setColor(Color.GREEN);
-        for (int i=0 ; i<nbPatient; i++) {
-            canvas.drawCircle(p[i].getX() / 100000, p[i].getY() / 100000, 20, paint);
-            imageView.setImageBitmap(bitmap);
-        }
+        for (int i=0;i<nbPatient;i++)
+        canvas.drawCircle(p[i].getX() / 100000, p[i].getY() / 100000, 20, paint);
+        imageView.setImageBitmap(bitmap);
 
     }
 
@@ -167,22 +157,10 @@ public class MenuPersonnel extends AppCompatActivity
             Intent intent = new Intent(this,MenuPatient.class);
 
             intent.putExtra("username", users[i]);
-            intent.putExtra("x", x[i]);
-            intent.putExtra("y", y[i]);
+            intent.putExtra("x", p[i].getX());
+            intent.putExtra("y", p[i].getY());
             this.startActivity(intent);
         }
-
-            //imageView.setImageBitmap(bitmap);
-            // Handle the camera action
-        /*} else if (id == R.id.nav_patient2) {
-
-        } else if (id == R.id.nav_patient3) {
-
-        } else if (id == R.id.nav_patient4) {
-
-        } else if (id == R.id.nav_settings_patients) {
-
-        } else if (id == R.id.nav_settings_map) {*/
 
         }
 
@@ -190,4 +168,51 @@ public class MenuPersonnel extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+    /**
+     * Represents an asynchronous login/registration task used to authenticate
+     * the user.
+     */
+    public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
+
+        //private Patient [] patient = new Patient[nbPatient];
+
+        UserLoginTask(String [] patientName) {
+            for(int i=0;i<nbPatient;i++) {
+                p[i]=new Patient();
+                p[i].setPatientName(patientName[i]);
+            }
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... params) {
+            // TODO: attempt authentication against a network service.
+
+            try {
+                // Simulate network access.
+                boolean finished = false;
+                //while (! finished) {
+                    for(int i=0;i<nbPatient;i++) {
+                        p[i].update();
+
+                    }
+                    Thread.sleep(2000);
+               // }
+            } catch (InterruptedException e) {
+                return false;
+            }
+            return true;
+        }
+
+
+        @Override
+        protected void onPostExecute(final Boolean success) {
+            mAuthTask = null;
+                    onDraw(canvas, p);
+        }
+
+
+    }
 }
+
+
+
