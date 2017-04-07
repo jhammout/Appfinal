@@ -54,7 +54,7 @@ public class MenuPersonnel extends AppCompatActivity
         int i;
 
         idPatient= new int[nbPatient];
-        Patient [] p =new Patient[nbPatient];
+        Patient[] p =new Patient[nbPatient];
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -84,14 +84,15 @@ public class MenuPersonnel extends AppCompatActivity
 
             idPatient[i]=Menu.FIRST + i;
             subMenu_patient.add(Menu.NONE, idPatient[i], Menu.NONE, users[i]).setIcon(R.drawable.user);
-            p[i].setUsername(users[i]);
+            //p[i].setPatientName(users[i]);
+
             try
             {
                 boolean finished = false;
                 while (! finished)
                 {
                     // Exécution de la tâche
-                    //p[i].update(users[i]);
+                    p[i].update(users[i]);
                     onDraw(canvas ,p);
                     Thread.sleep (5000); // En pause pour deux secondes
                 }
