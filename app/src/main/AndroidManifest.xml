@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.leak.my_application">
+
+    <!-- To allowed internet permissions -->
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/logo"
+        android:label="GeoDoc"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity
+            android:name=".Status"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".LoginPersonnel"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".LoginVisiteur"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".MenuPersonnel"
+            android:label="@string/title_activity_menu_personnel"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".VisiteurMenu"
+            android:label="@string/title_activity_visiteur_menu"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".MenuPatient"
+            android:label="@string/title_activity_menu_patient"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+    </application>
+
+</manifest>

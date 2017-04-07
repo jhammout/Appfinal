@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+   <!-- <item android:title="Patients"
+        android:id="@+id/patient">
+        <menu>
+           <item
+                android:id="@+id/nav_patient1"
+                android:icon="@android:drawable/ic_menu_mylocation"
+                android:title="Jihane" />
+            <item
+                android:id="@+id/nav_patient2"
+                android:icon="@android:drawable/ic_menu_mylocation"
+                android:title="Cyrine" />
+            <item
+                android:id="@+id/nav_patient3"
+                android:icon="@android:drawable/ic_menu_mylocation"
+                android:title="Alexis" />
+            <item
+                android:id="@+id/nav_patient4"
+                android:icon="@android:drawable/ic_menu_mylocation"
+                android:title="Romain" />
+        </menu>
+    </item>
+
+    <item android:title="Réglages"
+        android:id="@+id/reglage">
+        <menu>
+            <item
+                android:id="@+id/nav_settings_patients"
+                android:icon="@drawable/ic_menu_manage"
+                android:title="Réglages patients" />
+            <item
+                android:id="@+id/nav_settings_map"
+                android:icon="@drawable/ic_menu_manage"
+                android:title="Réglages cartes" />
+        </menu>
+    </item>-->
+
+</menu>

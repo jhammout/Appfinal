@@ -1,0 +1,10 @@
+<resources>
+    <string name="title_activity_menu_personnel">Menu</string>
+
+    <string name="navigation_drawer_open">Ouvrir la navigation</string>
+    <string name="navigation_drawer_close">fermer la navigation</string>
+
+    <string name="action_settings">Se déconnecter</string>
+    <string name="title_activity_visiteur_menu">VisiteurMenu</string>
+    <string name="title_activity_menu_patient">MenuPatient</string>
+</resources>
