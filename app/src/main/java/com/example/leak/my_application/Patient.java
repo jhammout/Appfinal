@@ -1,31 +1,19 @@
 package com.example.leak.my_application;
 
-import android.util.Log;
-import android.widget.ProgressBar;
-
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
+import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.StringRequest;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by jihane on 07/04/17.
  */
 
-public class Patient {
+public class Patient{
 
     private String patientName;
     private int x,y;
     private static final String URL = "https://geodoc.000webhostapp.com/BackEnd/getCoordinate.php";
     private StringRequest request;
-    ProgressBar bar;
+    private RequestQueue requestQueue;
 
 
     public Patient(){
@@ -39,15 +27,17 @@ public class Patient {
     }
 
     public void update() {
-
-        request = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
+        setX(this.getX()+10000000);
+        setY(this.getY()+10000000);
+       /*request = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 try {
                     JSONObject jsonObject = new JSONObject(response);
-                    Log.d("ResponseVolley",response);
                     setX(jsonObject.getInt("x"));
                     setY(jsonObject.getInt("y"));
+                    Log.d("ResponseVolley", String.valueOf(y)+"hello");
+
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -58,8 +48,12 @@ public class Patient {
             }
 
         }, new Response.ErrorListener() {
+
+
         @Override
         public void onErrorResponse(VolleyError error) {
+
+            Log.d("ResponseVolley", String.valueOf(y)+"helloError");
 
         }
     }) {
@@ -69,7 +63,8 @@ public class Patient {
             hashMap.put("patientName", patientName);
             return hashMap;
         }
-    };
+    };*/
+    //request
 
 }
 
@@ -82,16 +77,18 @@ public class Patient {
         return x;
     }
 
-    public void setX(int x) {
+    public int setX(int x) {
         this.x = x;
+        return x;
     }
 
     public int getY() {
         return y;
     }
 
-    public void setY(int y) {
+    public int setY(int y) {
         this.y = y;
+        return y;
     }
 
 }

@@ -7,9 +7,9 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -31,8 +31,11 @@ public class MenuPersonnel extends AppCompatActivity
     private String [] users;
     private Patient [] p;
     private int  nbPatient=0;
+    private int[] x,y;
     private Canvas canvas;
     private UserLoginTask mAuthTask = null;
+    private Handler handler;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,27 +48,19 @@ public class MenuPersonnel extends AppCompatActivity
 
         username = previousIntent.getStringExtra("username");
         users= previousIntent.getStringArrayExtra("users");
-        //x=previousIntent.getIntArrayExtra("x");
-        //y=previousIntent.getIntArrayExtra("y");
+        x=previousIntent.getIntArrayExtra("x");
+        y=previousIntent.getIntArrayExtra("y");
 
 
         nbPatient=previousIntent.getIntExtra("number",0);
 
         int i;
-        int[] pos= new int[2];
 
         idPatient= new int[nbPatient];
 
         p = new Patient[nbPatient];
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -87,14 +82,47 @@ public class MenuPersonnel extends AppCompatActivity
             idPatient[i]=Menu.FIRST + i;
             subMenu_patient.add(Menu.NONE, idPatient[i], Menu.NONE, users[i]).setIcon(R.drawable.user);
             p[i].setPatientName(users[i]);
-            p[i].update();
+            p[i].setX(x[i]);
+            p[i].setY(y[i]);
+
 
         }
-        mAuthTask = new UserLoginTask(users);
-        mAuthTask.execute((Void) null);
+        onDraw(canvas, p);
+        //p[0].setX(2000000);
+        //p[0].setY(2000000);
+
+
+
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                /*Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();*/
+
+            }
+        });
+
         // update
 
         navigationView.setNavigationItemSelectedListener(this);
+
+        handler=new Handler();
+
+        final Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+
+                mAuthTask = new UserLoginTask(users);
+                mAuthTask.execute((Void) null);
+
+                handler.postDelayed(this, 5000);
+
+            }
+
+
+        };
+        handler.postDelayed(runnable, 5000);
 
 
     }
@@ -172,19 +200,20 @@ public class MenuPersonnel extends AppCompatActivity
      * Represents an asynchronous login/registration task used to authenticate
      * the user.
      */
-    public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
+
+    public class UserLoginTask extends AsyncTask<Void, Void, Patient[]> {
 
         //private Patient [] patient = new Patient[nbPatient];
 
         UserLoginTask(String [] patientName) {
             for(int i=0;i<nbPatient;i++) {
-                p[i]=new Patient();
+                //p[i]=new Patient();
                 p[i].setPatientName(patientName[i]);
             }
         }
 
         @Override
-        protected Boolean doInBackground(Void... params) {
+        protected Patient [] doInBackground(Void... params) {
             // TODO: attempt authentication against a network service.
 
             try {
@@ -193,21 +222,30 @@ public class MenuPersonnel extends AppCompatActivity
                 //while (! finished) {
                     for(int i=0;i<nbPatient;i++) {
                         p[i].update();
+                        //p[i].setX(p[i].getX());
+                        //p[i].setY(p[i].getY());
+                       // p[i].setX(50000000);
 
                     }
                     Thread.sleep(2000);
                // }
             } catch (InterruptedException e) {
-                return false;
+                return p;
             }
-            return true;
+            return p;
         }
 
 
         @Override
-        protected void onPostExecute(final Boolean success) {
-            mAuthTask = null;
-                    onDraw(canvas, p);
+        protected void onPostExecute(final Patient[] patient) {
+            //mAuthTask = null;
+            for(int i=0;i<nbPatient;i++) {
+                p[i].setX(patient[i].getX());
+                p[i].setY(patient[i].getY());
+            }
+
+            onDraw(canvas, p);
+
         }
 
 
