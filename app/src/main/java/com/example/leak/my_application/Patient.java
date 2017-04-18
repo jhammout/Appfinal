@@ -27,9 +27,13 @@ public class Patient{
     }
 
     public void update() {
-        setX(this.getX()+10000000);
-        setY(this.getY()+10000000);
-       /*request = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
+        setX(this.getX()+300);
+        setY(this.getY());
+
+
+
+
+      /* request = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 try {

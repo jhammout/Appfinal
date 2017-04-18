@@ -30,7 +30,8 @@
         <activity
             android:name=".MenuPersonnel"
             android:label="@string/title_activity_menu_personnel"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:configChanges="orientation|screenSize|keyboardHidden"/>
         <activity
             android:name=".VisiteurMenu"
             android:label="@string/title_activity_visiteur_menu"
@@ -38,7 +39,10 @@
         <activity
             android:name=".MenuPatient"
             android:label="@string/title_activity_menu_patient"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar"
+            android:configChanges="orientation|screenSize|keyboardHidden"></activity>
+        <service android:name=".RefreshCoordinate"
+            android:enabled="true"></service>
     </application>
 
 </manifest>
